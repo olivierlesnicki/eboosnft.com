@@ -1,80 +1,72 @@
+import Onboarding from "@metamask/onboarding";
+
 import {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useState,
+  useRef,
+  useCallback,
 } from "react";
-import detectProvider from "@metamask/detect-provider";
 
-const MetaMaskContext = createContext();
+const MetaMaskContext = createContext({});
 
 export function MetaMaskProvider({ children }) {
-  const [status, setStatus] = useState(null);
-  const [provider, setProvider] = useState(null);
-  const [account, setAccount] = useState(null);
+  const [account, setAccount] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [connected, setConnected] = useState(false);
 
-  const handleAccountsChanged = useCallback(
-    async (accounts) => {
-      if (accounts.length) {
-        const chain = await provider.request({ method: "eth_chainId" });
+  const onboarding = useRef();
 
-        if (chain == 1) {
-          setAccount(accounts[0]);
-          setStatus(META_MASK_STATUS.CONNECTED);
-        } else {
-          setAccount(null);
-          setStatus(META_MASK_STATUS.INCORRECT_CHAIN);
-        }
-      } else {
-        setAccount(null);
-        setStatus(META_MASK_STATUS.NOT_CONNECTED);
-      }
-    },
-    [provider]
-  );
-
-  const connect = useCallback(async () => {
-    const accounts = await provider.request({
-      method: "eth_requestAccounts",
-    });
-    handleAccountsChanged(accounts);
-  }, [handleAccountsChanged, provider]);
-
-  // Detect MetaMask provider
   useEffect(() => {
-    let provider;
-
-    const init = async () => {
-      provider = await detectProvider();
-
-      if (provider) {
-        setProvider(provider);
-      } else {
-        setStatus(META_MASK_STATUS.NOT_INSTALLED);
-      }
-    };
-
-    init();
-
-    return () => {};
+    if (!onboarding.current) {
+      onboarding.current = new Onboarding();
+    }
   }, []);
 
   useEffect(() => {
-    if (provider) {
-      provider.on("chainChanged", () => window.location.reload());
-      provider.on("accountsChanged", handleAccountsChanged);
-
-      provider.request({ method: "eth_accounts" }).then(handleAccountsChanged);
-
-      return () => {
-        provider.removeAllListeners();
-      };
+    if (Onboarding.isMetaMaskInstalled()) {
+      if (account) {
+        setConnected(true);
+        onboarding.current.stopOnboarding();
+      } else {
+        setConnected(false);
+      }
     }
-  }, [provider, handleAccountsChanged]);
+  }, [account]);
+
+  useEffect(() => {
+    if (Onboarding.isMetaMaskInstalled()) {
+      window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
+        handleAccountsChanged(accounts);
+        setLoading(false);
+      });
+
+      window.ethereum.on("accountsChanged", handleAccountsChanged);
+      window.ethereum.on("chainChanged", () => window.location.reload());
+
+      return () => window.ethereum.removeAllListeners();
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const handleAccountsChanged = useCallback((accounts = []) => {
+    setAccount(accounts.length > 0 ? accounts[0] : null);
+  }, []);
+
+  const connect = useCallback(() => {
+    if (Onboarding.isMetaMaskInstalled()) {
+      window.ethereum
+        .request({ method: "eth_requestAccounts" })
+        .then(handleAccountsChanged);
+    } else {
+      onboarding.current.startOnboarding();
+    }
+  }, []);
 
   return (
-    <MetaMaskContext.Provider value={{ status, connect, account }}>
+    <MetaMaskContext.Provider value={{ account, connect, loading, connected }}>
       {children}
     </MetaMaskContext.Provider>
   );
@@ -83,10 +75,3 @@ export function MetaMaskProvider({ children }) {
 export function useMetaMask() {
   return useContext(MetaMaskContext);
 }
-
-export const META_MASK_STATUS = {
-  NOT_INSTALLED: "NOT_INSTALLED",
-  NOT_CONNECTED: "NOT_CONNECTED",
-  INCORRECT_CHAIN: "INCORRECT_CHAIN",
-  CONNECTED: "CONNECTED",
-};
