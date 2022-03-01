@@ -70,7 +70,7 @@ export default function Tx() {
           <div className="max-w-2xl mx-auto text-center mb-16">
             <p className="text-xl sm:text-2xl">
               Your transaction is being processed by the Ethereum network. It
-              shouldn't take more than a couple of minutes.
+              shouldn&apos;t take more than a couple of minutes.
             </p>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 w-full mx-auto max-w-4xl">
