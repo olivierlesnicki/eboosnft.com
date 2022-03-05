@@ -3,15 +3,6 @@ import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-function hex_to_ascii(str1) {
-  var hex = str1.toString();
-  var str = "";
-  for (var n = 0; n < hex.length; n += 2) {
-    str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
-  }
-  return str;
-}
-
 export default function Tx() {
   const router = useRouter();
   const { hash } = router.query;
@@ -50,7 +41,6 @@ export default function Tx() {
         );
       } catch (e) {
         let code = await ethersProvider.call(tx, tx.blockNumber);
-        let reason = hex_to_ascii(code.substring(138));
         console.log("revert reason:", reason);
       }
     };
