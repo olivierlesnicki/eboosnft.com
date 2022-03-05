@@ -12,12 +12,17 @@ import {
 
 import HeroContent from "./Hero/HeroContent";
 
+const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID;
+
 const MetaMaskContext = createContext({});
 
 export function MetaMaskProvider({ children }) {
-  const [account, setAccount] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [account, setAccount] = useState(null);
+  const [chainId, setChainId] = useState(null);
   const [connected, setConnected] = useState(false);
+
+  const [accountLoading, setAccountLoading] = useState(true);
+  const [chainIdLoading, setChainIdLoading] = useState(true);
 
   const onboarding = useRef();
 
@@ -40,22 +45,32 @@ export function MetaMaskProvider({ children }) {
 
   useEffect(() => {
     if (Onboarding.isMetaMaskInstalled()) {
-      window.ethereum.request({ method: "eth_accounts" }).then((accounts) => {
-        handleAccountsChanged(accounts);
-        setLoading(false);
-      });
+      window.ethereum
+        .request({ method: "eth_accounts" })
+        .then(handleAccountsChanged);
+
+      window.ethereum
+        .request({ method: "eth_chainId" })
+        .then(handleChainIdChanged);
 
       window.ethereum.on("accountsChanged", handleAccountsChanged);
       window.ethereum.on("chainChanged", () => window.location.reload());
 
       return () => window.ethereum.removeAllListeners();
     } else {
-      setLoading(false);
+      setAccountLoading(false);
+      setChainIdLoading(false);
     }
   }, []);
 
-  const handleAccountsChanged = useCallback((accounts = []) => {
-    setAccount(accounts.length > 0 ? accounts[0] : null);
+  const handleChainIdChanged = useCallback((chainId) => {
+    setChainId(chainId);
+    setChainIdLoading(false);
+  }, []);
+
+  const handleAccountsChanged = useCallback((accounts) => {
+    setAccount(accounts?.length > 0 ? accounts[0] : null);
+    setAccountLoading(false);
   }, []);
 
   const connect = useCallback(() => {
@@ -68,13 +83,41 @@ export function MetaMaskProvider({ children }) {
     }
   }, []);
 
-  if (loading) return null;
+  const switchChain = useCallback(async () => {
+    window.ethereum
+      .request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: CHAIN_ID }],
+      })
+      .then(handleAccountsChanged);
+  }, []);
+
+  if (accountLoading || chainIdLoading) return null;
+
+  if (CHAIN_ID != chainId) {
+    return (
+      <HeroContent>
+        <div className="flex justify-center">
+          <div className="text-white bg-red-500 px-6 py-4 mb-8 rounded-lg bold">
+            You're not connected to the correct network.
+          </div>
+        </div>
+        <button
+          className="mx-auto bg-slate-200 hover:bg-slate-300 h-14 px-4 text-lg font-bold rounded-lg flex items-center"
+          onClick={switchChain}
+        >
+          <Image height={36} width={36} src="/images/metamask.png" />
+          <div className="mx-2">Change network</div>
+        </button>
+      </HeroContent>
+    );
+  }
 
   if (!connected) {
     return (
       <HeroContent>
         <button
-          className="mt-12 mx-auto bg-slate-200 hover:bg-slate-300 h-14 px-4 text-lg font-bold rounded-lg flex items-center"
+          className="mx-auto bg-slate-200 hover:bg-slate-300 h-14 px-4 text-lg font-bold rounded-lg flex items-center"
           onClick={connect}
         >
           <Image height={36} width={36} src="/images/metamask.png" />
