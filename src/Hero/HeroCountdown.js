@@ -1,6 +1,7 @@
 import Countdown from "react-countdown";
 
 export default function HeroCountdown({ startTime }) {
+  console.log(startTime);
   return (
     <div className="flex justify-center">
       <div className="p-8 px-16 bg-slate-200 rounded-2xl">
@@ -9,6 +10,7 @@ export default function HeroCountdown({ startTime }) {
             Countdown
           </div>
           <div className="text-2xl tracking-wide">
+            &nbsp;
             <Countdown date={startTime * 1000} />
           </div>
         </div>
