@@ -16,16 +16,14 @@ const ContractContext = createContext();
 export function ContractProvider({ children }) {
   const account = useMetaMaskAccount();
 
+  const [loading, setLoading] = useState(true);
   const [contract, setContract] = useState(null);
   const [blockNumber, setBlockNumber] = useState(0);
 
-  const [immutables, setImmutables] = useState({
-    collectionSize: 0,
-    premintStartTime: 0,
-    reserveSize: 0,
-  });
-
   const [states, setStates] = useState({
+    collectionSize: 8192,
+    premintStartTime: 0,
+    reserveSize: 128,
     price: BigNumber.from(0),
     totalSupply: 0,
     premintEndTime: 0,
@@ -52,31 +50,6 @@ export function ContractProvider({ children }) {
     }
   }, [account]);
 
-  // IMMUTABLE VARIABLES
-  useAsyncEffect(
-    async (isActive) => {
-      if (contract) {
-        const names = ["collectionSize", "premintStartTime", "reserveSize"];
-
-        const results = await Promise.all(
-          names.map((name) => contract[name]())
-        );
-
-        if (isActive()) {
-          setImmutables(
-            names.reduce((immutables, name, index) => {
-              return {
-                ...immutables,
-                [name]: results[index].toNumber(),
-              };
-            }, {})
-          );
-        }
-      }
-    },
-    [contract]
-  );
-
   // STATE VARIABLES
   useAsyncEffect(
     async (isActive) => {
@@ -85,13 +58,20 @@ export function ContractProvider({ children }) {
         const premintEndTime = (await contract.premintEndTime()).toNumber();
         const reserved = (await contract.reserved()).toNumber();
         const totalSupply = (await contract.totalSupply()).toNumber();
+        const collectionSize = (await contract.collectionSize()).toNumber();
+        const premintStartTime = (await contract.premintStartTime()).toNumber();
+        const reserveSize = (await contract.reserveSize()).toNumber();
 
         if (isActive()) {
+          setLoading(false);
           setStates({
             premintEndTime,
             price,
             reserved,
             totalSupply,
+            collectionSize,
+            premintStartTime,
+            reserveSize,
           });
         }
       }
@@ -117,14 +97,14 @@ export function ContractProvider({ children }) {
           });
         }
 
-        return tx.hash;
+        return tx;
       }
     },
     [contract, states.premintEndTime, states.price]
   );
 
   return (
-    <ContractContext.Provider value={{ ...immutables, ...states, mint }}>
+    <ContractContext.Provider value={{ ...states, mint, loading }}>
       {children}
     </ContractContext.Provider>
   );

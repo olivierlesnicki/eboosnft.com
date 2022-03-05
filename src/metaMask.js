@@ -99,16 +99,12 @@ export function MetaMaskProvider({ children }) {
       <HeroContent>
         <div className="flex justify-center">
           <div className="text-white bg-red-500 px-6 py-4 mb-8 rounded-lg bold">
-            You're not connected to the correct network.
+            Your wallet isn't connected to the correct network.
           </div>
         </div>
-        <button
-          className="mx-auto bg-slate-200 hover:bg-slate-300 h-14 px-4 text-lg font-bold rounded-lg flex items-center"
-          onClick={switchChain}
-        >
-          <Image height={36} width={36} src="/images/metamask.png" />
-          <div className="mx-2">Change network</div>
-        </button>
+        <MetaMaskButton className="mx-auto" onClick={switchChain}>
+          Change network
+        </MetaMaskButton>
       </HeroContent>
     );
   }
@@ -116,13 +112,9 @@ export function MetaMaskProvider({ children }) {
   if (!connected) {
     return (
       <HeroContent>
-        <button
-          className="mx-auto bg-slate-200 hover:bg-slate-300 h-14 px-4 text-lg font-bold rounded-lg flex items-center"
-          onClick={connect}
-        >
-          <Image height={36} width={36} src="/images/metamask.png" />
-          <div className="mx-2">Connect with MetaMask</div>
-        </button>
+        <MetaMaskButton className="mx-auto" onClick={connect}>
+          Connect with MetaMask
+        </MetaMaskButton>
       </HeroContent>
     );
   }
@@ -136,4 +128,16 @@ export function MetaMaskProvider({ children }) {
 
 export function useMetaMaskAccount() {
   return useContext(MetaMaskContext);
+}
+
+export function MetaMaskButton({ children, className, ...props }) {
+  return (
+    <button
+      {...props}
+      className={`bg-slate-200 hover:bg-slate-300 h-14 px-4 text-lg font-bold rounded-lg flex items-center ${className}`}
+    >
+      <Image height={36} width={36} src="/images/metamask.png" />
+      <div className="mx-2">{children}</div>
+    </button>
+  );
 }
