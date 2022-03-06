@@ -94,6 +94,16 @@ export function MetaMaskProvider({ children }) {
 
   if (accountLoading || chainIdLoading) return null;
 
+  if (!connected) {
+    return (
+      <HeroContent>
+        <MetaMaskButton className="mx-auto" onClick={connect}>
+          Connect with MetaMask
+        </MetaMaskButton>
+      </HeroContent>
+    );
+  }
+
   if (CHAIN_ID != chainId) {
     return (
       <HeroContent>
@@ -104,16 +114,6 @@ export function MetaMaskProvider({ children }) {
         </div>
         <MetaMaskButton className="mx-auto" onClick={switchChain}>
           Change network
-        </MetaMaskButton>
-      </HeroContent>
-    );
-  }
-
-  if (!connected) {
-    return (
-      <HeroContent>
-        <MetaMaskButton className="mx-auto" onClick={connect}>
-          Connect with MetaMask
         </MetaMaskButton>
       </HeroContent>
     );

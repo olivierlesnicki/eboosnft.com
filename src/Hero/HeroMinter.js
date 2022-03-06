@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { utils } from "ethers";
+import Spinner from "../Spinner";
 
 import AddIcon from "../AddIcon";
 import RemoveIcon from "../RemoveIcon";
@@ -45,11 +46,15 @@ export default function HeroMinter({ max, mint, price, available }) {
       </div>
       {minting ? (
         <div className="text-lg">
-          <div className="p-8 px-16 bg-slate-200 rounded-2xl">
+          <div className="p-8 px-16 bg-slate-200 rounded-2xl flex flex-col items-center">
             {hash ? (
               <>
-                Transaction in progress...
-                <br /> Do not close or refresh this page.
+                <Spinner className="w-12 mb-4" color="#000" />
+
+                <div>Transaction in progress...</div>
+                <div className="text-slate-400 text-sm mt-2">
+                  Do not close or refresh this page.
+                </div>
               </>
             ) : (
               "Review your transaction in MetaMask."
