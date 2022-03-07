@@ -1,11 +1,18 @@
+import { useCallback, useState } from "react";
+import { useRouter } from "next/router";
+
 import HeroContent from "./HeroContent";
 import HeroCountdown from "./HeroCountdown";
 import HeroMinter from "./HeroMinter";
-import Spinner from "../Spinner";
+import HeroMinting from "./HeroMinting";
+import HeroSoldOut from "./HeroSoldOut";
 
 import { useContract } from "../contract";
 
 export default function Hero() {
+  const router = useRouter();
+  const [minting, setMinting] = useState(false);
+
   const {
     collectionSize,
     reserveSize,
@@ -33,6 +40,20 @@ export default function Hero() {
       reserved;
   }
 
+  const handleMint = useCallback(
+    async (quantity) => {
+      setMinting(true);
+
+      try {
+        const tx = await mint(quantity);
+        router.push(`tx/${tx.hash}`);
+      } catch (e) {
+        setMinting(false);
+      }
+    },
+    [router, mint]
+  );
+
   // Contract Is Still Loading
   if (loading) {
     return <HeroContent />;
@@ -47,12 +68,30 @@ export default function Hero() {
     );
   }
 
+  // Minting In Progress
+  if (minting) {
+    return (
+      <HeroContent>
+        <HeroMinting />
+      </HeroContent>
+    );
+  }
+
+  // Premint Has Sold Out
+  if (!available) {
+    return (
+      <HeroContent>
+        <HeroSoldOut />
+      </HeroContent>
+    );
+  }
+
   return (
     <HeroContent>
       <HeroMinter
         available={available}
         max={hasMintStarted ? 5 : 8}
-        mint={mint}
+        onMint={handleMint}
         price={price}
       />
     </HeroContent>
