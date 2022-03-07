@@ -6,6 +6,8 @@ export default async (req, res) => {
   const eboo = tokens[(startIndex + req.query.index) % 8192];
   const index = req.query.index;
 
+  // Check if token exists before showing it
+
   return res.status(200).json({
     name: `Eboo #${index}`,
     description:
