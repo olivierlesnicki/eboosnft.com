@@ -11,7 +11,7 @@ export default function Hash() {
   const router = useRouter();
   const [loadingTx, setLoadingTx] = useState(true);
   const [tx, setTx] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const { hash } = router.query;
 
   useAsyncEffect(async (isValid) => {
@@ -38,7 +38,7 @@ export default function Hash() {
         setTx(tx);
       }
     } catch (e) {
-      setError(tx.hash);
+      setError(true);
     }
   }, []);
 
