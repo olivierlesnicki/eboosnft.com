@@ -22,6 +22,8 @@ export default function Hash() {
     const tx = await ethersProvider.getTransaction(hash);
     //const quantity = iface.decodeFunctionData("premint", tx.data)[0].toNumber();
 
+    console.log("tx", tx);
+
     if (isValid()) {
       if (!tx) {
         return router.push("/");
@@ -42,6 +44,25 @@ export default function Hash() {
 
   if (loadingTx) return null;
 
+  if (error) {
+    return (
+      <div className="flex flex-col items-center text-slate-900 px-8 text-center">
+        <h1 className="mt-16 text-6xl sm:text-8xl font-bold mb-8">Error</h1>
+        <div className="mb-12 max-w-md sm:max-w-lg md:max-w-2xl mx-auto text-xl sm:text-2xl">
+          Your transaction has failed.
+          <br /> Find more details on block explorer <br />
+          <br />
+          <a
+            href={`https://etherscan.io/tx/${error}`}
+            className="text-blue-400 hover:text-blue-600"
+          >
+            etherscan.io/{hash.substring(0, 6)}
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   if (!tx) {
     return (
       <div className="flex flex-col items-center text-slate-900 px-8 text-center">
@@ -55,25 +76,6 @@ export default function Hash() {
         <Spinner className="animate-spin text-slate-300 fill-blue-500 w-12 h-12" />
         <div className="mt-4 max-w-md sm:max-w-lg md:max-w-2xl mx-auto text-slate-400">
           This can take up to one minute.
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center text-slate-900 px-8 text-center">
-        <h1 className="mt-16 text-6xl sm:text-8xl font-bold mb-8">Error</h1>
-        <div className="mb-12 max-w-md sm:max-w-lg md:max-w-2xl mx-auto text-xl sm:text-2xl">
-          Your transaction has failed.
-          <br /> Find more details on block explorer <br />
-          <br />
-          <a
-            href={`https://etherscan.io/tx/${error}`}
-            className="text-blue-400 hover:text-blue-600"
-          >
-            etherscan.io/{tx.hash.substring(0, 6)}
-          </a>
         </div>
       </div>
     );
