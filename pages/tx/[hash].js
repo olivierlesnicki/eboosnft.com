@@ -86,14 +86,24 @@ export default function Hash() {
       <h1 className="mt-16 text-6xl sm:text-8xl font-bold mb-8">Success</h1>
       <div className="mb-12 max-w-md sm:max-w-lg md:max-w-2xl mx-auto text-xl sm:text-2xl">
         Your transaction is complete.
-        <br /> Find more details on block explorer <br />
-        <br />
-        <a
-          href={`https://etherscan.io/tx/${tx.hash}`}
-          className="text-blue-400 hover:text-blue-600"
-        >
-          etherscan.io/{tx.hash.substring(0, 6)}
-        </a>
+        <br /> Check your eboos on OpenSea.
+        <div className="mt-8 mb-8 flex justify-center">
+          <a
+            href={`https://opensea.io/${tx.from}`}
+            className="text-white bg-blue-500 hover:bg-blue-600 h-14 flex items-center justify-center px-6 rounded-lg"
+          >
+            OpenSea.io/{tx.from.substring(0, 6)}...
+          </a>
+        </div>
+        <div className="text-sm text-slate-400">
+          <div>Check your transaction on block explorer.</div>
+          <a
+            href={`https://etherscan.io/tx/${tx.hash}`}
+            className="text-blue-400 hover:text-blue-600"
+          >
+            etherscan.io/{tx.hash.substring(0, 6)}
+          </a>
+        </div>
       </div>
     </div>
   );
