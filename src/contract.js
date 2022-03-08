@@ -104,7 +104,7 @@ export function ContractProvider({ children }) {
   );
 
   return (
-    <ContractContext.Provider value={{ ...states, mint, loading }}>
+    <ContractContext.Provider value={{ ...states, mint, blockNumber, loading }}>
       {children}
     </ContractContext.Provider>
   );

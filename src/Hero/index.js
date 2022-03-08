@@ -22,6 +22,7 @@ export default function Hero() {
     premintStartTime,
     premintEndTime,
     mint,
+    blockNumber,
     loading,
   } = useContract();
 
@@ -39,7 +40,7 @@ export default function Hero() {
         24 *
         3600
     );
-  }, [premintStartTime]);
+  }, [premintStartTime, blockNumber]);
 
   if (!hasMintStarted) {
     available =
