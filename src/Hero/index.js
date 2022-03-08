@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 
 import HeroContent from "./HeroContent";
@@ -31,6 +31,15 @@ export default function Hero() {
   const isMintEnded = totalSupply == collectionSize;
 
   let available = collectionSize - reserveSize + reserved - totalSupply;
+
+  const nextPremintDropTime = useMemo(() => {
+    return (
+      premintStartTime +
+      (Math.floor((Date.now() / 1000 - premintStartTime) / (24 * 3600)) + 1) *
+        24 *
+        3600
+    );
+  }, [premintStartTime]);
 
   if (!hasMintStarted) {
     available =
@@ -82,6 +91,7 @@ export default function Hero() {
     return (
       <HeroContent>
         <HeroSoldOut />
+        <HeroCountdown startTime={nextPremintDropTime} />
       </HeroContent>
     );
   }

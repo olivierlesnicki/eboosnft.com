@@ -1,7 +1,6 @@
 import Countdown from "react-countdown";
 
 export default function HeroCountdown({ startTime }) {
-  console.log(startTime);
   return (
     <div className="flex justify-center">
       <div className="p-8 px-16 bg-slate-200 rounded-2xl">
