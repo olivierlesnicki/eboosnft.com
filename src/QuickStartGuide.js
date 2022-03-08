@@ -64,7 +64,7 @@ export default function QuickStartGuide() {
         <Path />
         <Step step={3} title="Mint your first eboo">
           Use our website to mint your very first eboo! Remember: you can mint
-          up to 16 eboos in a single transaction. Welcome to the gang #wagmi.
+          up to 8 eboos in a single transaction. Welcome to the gang #wagmi.
         </Step>
         <Path />
       </div>
