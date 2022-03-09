@@ -47,7 +47,7 @@ export default function Hash() {
   if (error) {
     return (
       <div className="flex flex-col items-center text-slate-900 px-8 text-center">
-        <h1 className="mt-16 text-6xl sm:text-8xl font-bold mb-8">Error</h1>
+        <h1 className="mt-16 text-6xl sm:text-8xl font-bold mb-8">Failure</h1>
         <div className="mb-12 max-w-md sm:max-w-lg md:max-w-2xl mx-auto text-xl sm:text-2xl">
           Your transaction has failed.
           <br /> Find more details on block explorer <br />
