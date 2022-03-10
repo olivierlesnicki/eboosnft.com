@@ -91,8 +91,7 @@ export default function Hero() {
   if (!available) {
     return (
       <HeroContent>
-        <HeroSoldOut />
-        <HeroCountdown startTime={nextPremintDropTime} />
+        <HeroSoldOut nextTime={nextPremintDropTime} />
       </HeroContent>
     );
   }

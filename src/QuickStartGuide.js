@@ -32,9 +32,9 @@ export default function QuickStartGuide() {
   return (
     <div className="bg-slate-900 text-white">
       <div className="mx-auto max-w-4xl px-8 py-12 md:py-24">
-        <h2 className="text-6xl sm:text-8xl font-bold text-center mb-8">
+        <h1 className="text-4xl sm:text-6xl font-bold mb-8 text-center">
           Quick Start Guide
-        </h2>
+        </h1>
         <Path />
         <Step step={1} title="Create a MetaMask wallet">
           {" "}

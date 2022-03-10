@@ -1,11 +1,11 @@
 import Hero from "../src/Hero";
-import QuickStartGuide from "../src/QuickStartGuide";
+import StaticPage from "../src/Page";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <QuickStartGuide />
+      <StaticPage />
     </>
   );
 }
