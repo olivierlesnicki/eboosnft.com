@@ -19,13 +19,6 @@ import {
 } from "firebase/database";
 
 import app from "./firebaseApp";
-import { useMetaMaskAccount } from "./metaMask";
-
-function toHex(_) {
-  return _.split("")
-    .map((c) => c.charCodeAt(0).toString(16).padStart(2, "0"))
-    .join("");
-}
 
 const AuthContext = createContext();
 
