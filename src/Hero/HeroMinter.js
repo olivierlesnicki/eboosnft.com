@@ -3,13 +3,10 @@ import { utils } from "ethers";
 import {
   getDatabase,
   ref,
-  set,
-  serverTimestamp,
-  get,
   query,
-  orderByValue,
-  startAt,
-  endAt,
+  onValue,
+  equalTo,
+  orderByChild,
 } from "firebase/database";
 
 import app from "../../src/firebaseApp";
@@ -17,9 +14,10 @@ import app from "../../src/firebaseApp";
 import AddIcon from "../AddIcon";
 import RemoveIcon from "../RemoveIcon";
 
-export default function HeroMinter({ max, onMint, price, available, user }) {
+export default function HeroMinter({ max, onMint, price, available }) {
   const [quantity, setQuantity] = useState(1);
-  const [warning, setWarning] = useState(false);
+  const [onlineCount, setOnlines] = useState(0);
+  const [isWarningVisible, setIsWarningVisible] = useState(false);
 
   useEffect(() => {
     setQuantity((_) => Math.min(available, _));
@@ -34,56 +32,30 @@ export default function HeroMinter({ max, onMint, price, available, user }) {
   }, []);
 
   const handleMint = useCallback(async () => {
-    const db = getDatabase(app);
-    const snapshot = await get(
-      query(ref(db, "minters"), orderByValue(), startAt(Date.now() - 30 * 1000))
-    );
-
-    if (snapshot.size > 10) {
-      setWarning(snapshot.size);
+    if (onlineCount >= 1) {
+      setIsWarningVisible(true);
     } else {
-      await set(ref(db, `minters/${user}`), serverTimestamp());
       onMint(quantity);
     }
-  }, [onMint, quantity, user]);
+  }, [onMint, quantity, onlineCount]);
 
-  const forceMint = useCallback(async () => {
-    const db = getDatabase(app);
-    await set(ref(db, `minters/${user}`), serverTimestamp());
+  const handleForceMint = useCallback(async () => {
     onMint(quantity);
   }, [onMint, quantity]);
 
-  const cancelMint = useCallback(() => {
-    setWarning(0);
+  const cancel = useCallback(() => {
+    setIsWarningVisible(false);
   }, []);
 
-  if (warning > 0) {
-    return (
-      <div className="text-lg flex flex-col items-center">
-        <div className="p-8 px-16 bg-slate-200 rounded-2xl flex flex-col items-center  max-w-xl">
-          <div>
-            There are more than {warning} other people trying to mint an Eboo
-            right now. There's a chance your transaction will be rejected by the
-            network.
-          </div>
-          <div className="mt-8 flex ">
-            <button
-              className="h-12 w-32 px-6 bg-slate-300 rounded-lg hover:bg-slate-400 mr-4 font-bold"
-              onClick={cancelMint}
-            >
-              Cancel
-            </button>
-            <button
-              className="h-12 w-32 px-6 bg-blue-500 rounded-lg text-white hover:bg-blue-600 font-bold"
-              onClick={forceMint}
-            >
-              Continue
-            </button>
-          </div>
-        </div>
-      </div>
+  useEffect(() => {
+    const db = getDatabase(app);
+    return onValue(
+      query(ref(db, "status"), orderByChild("state"), equalTo("online")),
+      (snapshot) => {
+        setOnlines(Math.max(snapshot.size, 0));
+      }
     );
-  }
+  }, []);
 
   return (
     <div className="flex flex-col items-center">
@@ -92,38 +64,73 @@ export default function HeroMinter({ max, onMint, price, available, user }) {
         There are <span className="font-bold">{available}</span> eboos available
         today.
       </div>
-      <div className="p-8 px-16 bg-slate-200 rounded-2xl">
-        <div className="group flex items-center justify-center mb-4">
-          <button
-            className="text-slate-600 bg-slate-300 hover:bg-slate-400 h-12 w-12 rounded-full font-bold uppercase text-4xl flex items-center justify-center disabled:bg-transparent disabled:text-slate-300 transition-colors"
-            disabled={quantity == 1}
-            onClick={remove}
-          >
-            <RemoveIcon className="h-6 w-6" />
-          </button>
-          <div className="font-bold bg-white rounded-lg px-6 h-12 items-center justify-center flex mx-4 drop-shadow text-lg select-none">
-            {quantity}
-          </div>
-          <button
-            className="text-slate-600 bg-slate-300 hover:bg-slate-400 h-12 w-12 rounded-full font-bold uppercase text-4xl flex items-center justify-center disabled:bg-transparent disabled:text-slate-300 transition-colors"
-            disabled={quantity == Math.min(available, max)}
-            onClick={add}
-          >
-            <AddIcon className="h-6 w-6" />
-          </button>
-          <button
-            className="text-white bg-blue-500 hover:bg-blue-600 h-12 px-6 rounded-lg font-bold ml-8 text-lg cursor-pointer"
-            onClick={handleMint}
-          >
-            Mint
-          </button>
+      <div className="mb-8 max-w-lg max-auto">
+        <div className="px-4 flex items-center bg-slate-100 h-10 text-sm rounded">
+          <span className="h-2 w-2 bg-green-400 rounded-full animate-pulse"></span>{" "}
+          &nbsp; Number of buyers online &nbsp;
+          <span className="font-bold">{onlineCount}</span>
         </div>
       </div>
-      <div className="py-2 -mt-5 bg-blue-500 text-lg text-white px-8 rounded drop-shadow">
-        <span className="font-bold tracking-wide uppercase">TOTAL</span>{" "}
-        {utils.formatEther(price.mul(quantity))} Ξ +{" "}
-        <span className="italic">gas fees</span>
-      </div>
+      {isWarningVisible ? (
+        <>
+          <div className="p-8 bg-slate-200 rounded-2xl max-w-lg text-left">
+            <div>
+              There are a high number of buyers but only a few eboos left.
+              There's a chance your transaction will fail. Please be aware of
+              the risks before continuing.
+            </div>
+            <div className="mt-8 flex justify-center">
+              <button
+                className="text-blue-500 border-blue-500 border-2 hover:bg-blue-100 h-12 w-32 rounded-lg font-bold text-lg cursor-pointer"
+                onClick={cancel}
+              >
+                Cancel
+              </button>
+              <button
+                className="text-white bg-blue-500 hover:bg-blue-600 h-12 w-32 rounded-lg font-bold ml-8 text-lg cursor-pointer"
+                onClick={handleForceMint}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="py-8 px-16 bg-slate-200 rounded-2xl">
+            <div className="group flex items-center justify-center mb-4">
+              <button
+                className="text-slate-600 bg-slate-300 hover:bg-slate-400 h-12 w-12 rounded-full font-bold uppercase text-4xl flex items-center justify-center disabled:bg-transparent disabled:text-slate-300 transition-colors"
+                disabled={quantity == 1}
+                onClick={remove}
+              >
+                <RemoveIcon className="h-6 w-6" />
+              </button>
+              <div className="font-bold bg-white rounded-lg px-6 h-12 items-center justify-center flex mx-4 drop-shadow text-lg select-none">
+                {quantity}
+              </div>
+              <button
+                className="text-slate-600 bg-slate-300 hover:bg-slate-400 h-12 w-12 rounded-full font-bold uppercase text-4xl flex items-center justify-center disabled:bg-transparent disabled:text-slate-300 transition-colors"
+                disabled={quantity == Math.min(available, max)}
+                onClick={add}
+              >
+                <AddIcon className="h-6 w-6" />
+              </button>
+              <button
+                className="text-white bg-blue-500 hover:bg-blue-600 h-12 px-6 rounded-lg font-bold ml-8 text-lg cursor-pointer"
+                onClick={handleMint}
+              >
+                Mint
+              </button>
+            </div>
+          </div>
+          <div className="py-2 -mt-5 bg-blue-500 text-lg text-white px-8 rounded drop-shadow">
+            <span className="font-bold tracking-wide uppercase">TOTAL</span>{" "}
+            {utils.formatEther(price.mul(quantity))} Ξ +{" "}
+            <span className="italic">gas fees</span>
+          </div>
+        </>
+      )}
     </div>
   );
 }

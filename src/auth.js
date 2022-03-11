@@ -6,12 +6,17 @@ import {
   useEffect,
   useState,
 } from "react";
+
+import { getAuth, onAuthStateChanged, signInAnonymously } from "firebase/auth";
+
 import {
-  getAuth,
-  signInWithCustomToken,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+  getDatabase,
+  ref,
+  serverTimestamp,
+  onValue,
+  onDisconnect,
+  set,
+} from "firebase/database";
 
 import app from "./firebaseApp";
 import { useMetaMaskAccount } from "./metaMask";
@@ -25,7 +30,6 @@ function toHex(_) {
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const account = useMetaMaskAccount();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(false);
 
@@ -33,43 +37,43 @@ export function AuthProvider({ children }) {
     const auth = getAuth(app);
 
     return onAuthStateChanged(auth, (user) => {
-      setUser(user?.uid || null);
-      setLoading(false);
+      if (!user) {
+        signInAnonymously(auth);
+      } else {
+        setUser(user.uid);
+        setLoading(false);
+      }
     });
   }, []);
 
-  const authenticate = useCallback(async () => {
-    const auth = getAuth(app);
-    const provider = window.ethereum;
-
-    // Nonce
-    const nonceRequest = await axios.post("/api/auth/nonce", {
-      address: account,
-    });
-    const { nonce } = nonceRequest.data;
-
-    const signature = await provider.request({
-      method: "personal_sign",
-      params: [`0x${toHex(nonce)}`, account],
-    });
-
-    // Verify
-    const tokenRequest = await axios.post("/api/auth/token", {
-      address: account,
-      signature,
-    });
-    const { token } = tokenRequest.data;
-
-    // Sign In With Custom Token
-    await signInWithCustomToken(auth, token);
-  }, [account]);
-
   useEffect(() => {
-    if (user && account && user != account) {
-      const auth = getAuth(app);
-      signOut(auth);
+    if (user) {
+      const db = getDatabase(app);
+      const statusRef = ref(db, `status/${user}`);
+
+      const offline = {
+        state: "offline",
+        last_changed: serverTimestamp(),
+      };
+
+      var online = {
+        state: "online",
+        last_changed: serverTimestamp(),
+      };
+
+      return onValue(ref(db, ".info/connected"), (snapshot) => {
+        if (snapshot.val() == false) {
+          return;
+        }
+
+        onDisconnect(statusRef)
+          .set(offline)
+          .then(() => set(statusRef, online));
+      });
     }
-  }, [user, account]);
+  }, [user]);
+
+  const authenticate = useCallback(async () => {}, []);
 
   return (
     <AuthContext.Provider value={{ loading, user, authenticate }}>

@@ -9,7 +9,6 @@ import HeroSoldOut from "./HeroSoldOut";
 
 import { useContract } from "../contract";
 import { useAuth } from "../auth";
-import HeroAuthenticate from "./HeroAuthenticate";
 
 export default function Hero() {
   const router = useRouter();
@@ -70,14 +69,6 @@ export default function Hero() {
   // Contract Is Still Loading
   if (loading || !auth || auth.loading) {
     return <HeroContent />;
-  }
-
-  if (!auth.user) {
-    return (
-      <HeroContent>
-        <HeroAuthenticate authenticate={auth.authenticate} />
-      </HeroContent>
-    );
   }
 
   // Premint Has Not Started
