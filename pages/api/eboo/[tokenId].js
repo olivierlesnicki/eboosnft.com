@@ -6,7 +6,7 @@ import tokens from "../../../src/tokens.json";
 const startIndex = 1336;
 const startOffset = Math.floor((startIndex / 8192) * 512) * 16;
 
-export default async (req, res) => {
+export default async function eboo(req, res) {
   const web3 = createAlchemyWeb3(
     "https://eth-mainnet.alchemyapi.io/v2/pHD9f33haQv588tHSeavl1Lmt76Fu5FB"
   );
@@ -41,4 +41,4 @@ export default async (req, res) => {
     image: `https://ipfs.io/ipfs/${eboo.hash}`,
     attributes: eboo.attributes.filter((_) => _.trait_type !== "Background"),
   });
-};
+}

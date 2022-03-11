@@ -1,14 +1,17 @@
 import "../styles/globals.css";
 
-import { MetaMaskProvider } from "../src/metaMask";
+import { AuthProvider } from "../src/auth";
 import { ContractProvider } from "../src/contract";
+import { MetaMaskProvider } from "../src/metaMask";
 
 function MyApp({ Component, pageProps }) {
   return (
     <MetaMaskProvider>
-      <ContractProvider>
-        <Component {...pageProps} />
-      </ContractProvider>
+      <AuthProvider>
+        <ContractProvider>
+          <Component {...pageProps} />
+        </ContractProvider>
+      </AuthProvider>
     </MetaMaskProvider>
   );
 }
