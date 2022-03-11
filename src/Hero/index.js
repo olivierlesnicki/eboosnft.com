@@ -8,9 +8,12 @@ import HeroMinting from "./HeroMinting";
 import HeroSoldOut from "./HeroSoldOut";
 
 import { useContract } from "../contract";
+import { useAuth } from "../auth";
+import HeroAuthenticate from "./HeroAuthenticate";
 
 export default function Hero() {
   const router = useRouter();
+  const auth = useAuth();
   const [minting, setMinting] = useState(false);
 
   const {
@@ -65,8 +68,16 @@ export default function Hero() {
   );
 
   // Contract Is Still Loading
-  if (loading) {
+  if (loading || !auth || auth.loading) {
     return <HeroContent />;
+  }
+
+  if (!auth.user) {
+    return (
+      <HeroContent>
+        <HeroAuthenticate authenticate={auth.authenticate} />
+      </HeroContent>
+    );
   }
 
   // Premint Has Not Started
@@ -103,6 +114,7 @@ export default function Hero() {
         max={hasMintStarted ? 5 : 8}
         onMint={handleMint}
         price={price}
+        user={auth.user}
       />
     </HeroContent>
   );

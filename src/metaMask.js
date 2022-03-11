@@ -11,6 +11,7 @@ import {
 } from "react";
 
 import HeroContent from "./Hero/HeroContent";
+import StaticPage from "./Page";
 
 const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID;
 
@@ -96,26 +97,32 @@ export function MetaMaskProvider({ children }) {
 
   if (!connected) {
     return (
-      <HeroContent>
-        <MetaMaskButton className="mx-auto" onClick={connect}>
-          Connect with MetaMask
-        </MetaMaskButton>
-      </HeroContent>
+      <>
+        <HeroContent>
+          <MetaMaskButton className="mx-auto" onClick={connect}>
+            Connect with MetaMask
+          </MetaMaskButton>
+        </HeroContent>
+        <StaticPage />
+      </>
     );
   }
 
   if (CHAIN_ID != chainId) {
     return (
-      <HeroContent>
-        <div className="flex justify-center">
-          <div className="text-white bg-red-500 px-6 py-4 mb-8 rounded-lg bold">
-            Your wallet isn't connected to the correct network.
+      <>
+        <HeroContent>
+          <div className="flex justify-center">
+            <div className="text-white bg-red-500 px-6 py-4 mb-8 rounded-lg bold">
+              Your wallet isn't connected to the correct network.
+            </div>
           </div>
-        </div>
-        <MetaMaskButton className="mx-auto" onClick={switchChain}>
-          Change network
-        </MetaMaskButton>
-      </HeroContent>
+          <MetaMaskButton className="mx-auto" onClick={switchChain}>
+            Change network
+          </MetaMaskButton>
+        </HeroContent>
+        <StaticPage />
+      </>
     );
   }
 
