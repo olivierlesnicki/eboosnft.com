@@ -30,7 +30,7 @@ export default function HeroContent({ children }) {
                 left: `${(day / 64) * 100}%`,
               }}
             >
-              <div className="py-2 w-32 bg-blue-500 text-white rounded text-lg">
+              <div className="py-2 w-32 bg-sky-500 text-white rounded text-lg">
                 <div>
                   Day {Math.floor(day + 1)} / 64 <br />
                   <span className="font-bold">
@@ -39,7 +39,7 @@ export default function HeroContent({ children }) {
                 </div>
               </div>
               <div
-                className="border-t-blue-500"
+                className="border-t-sky-500"
                 style={{
                   width: 0,
                   height: 0,
@@ -53,14 +53,11 @@ export default function HeroContent({ children }) {
           <div className="mt-2 flex">
             {days.map((index) =>
               index < day - 1 ? (
-                <div
-                  className="h-4 flex-1 mr-0.5 bg-blue-500"
-                  key={index}
-                ></div>
+                <div className="h-4 flex-1 mr-0.5 bg-sky-500" key={index}></div>
               ) : index < day ? (
                 <div className="h-4 flex-1 mr-0.5 bg-slate-300" key={index}>
                   <div
-                    className=" bg-blue-500"
+                    className=" bg-sky-500"
                     style={{
                       height: "100%",
                       width: `${(day - Math.floor(day)) * 100}%`,

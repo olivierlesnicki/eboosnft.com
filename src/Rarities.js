@@ -33,6 +33,7 @@ export default function Rarities() {
             <a
               href="https://www.instagram.com/clar.th/"
               className="text-sky-500 hover:text-sky-600 font-bold"
+              target="_blank"
             >
               @clara.th
             </a>
@@ -61,7 +62,7 @@ export default function Rarities() {
       </div>
       <div className="p-8 mt-8">
         <div className="mx-auto rounded-3xl max-w-5xl lg:flex lg:flex-row-reverse lg:items-center">
-          <div className="max-w-2xl text-left mb-8 lg:mb-0 lg:ml-16 mx-auto bg-slate-200 p-16 rounded-2xl">
+          <div className="max-w-2xl text-left mb-8 lg:mb-0 lg:ml-16 mx-auto bg-slate-200 py-12 md:py-16 px-16 rounded-2xl">
             <div className="font-bold text-4xl mb-8">Predictable outcome</div>
             <div className="text-xl sm:text-2xl">
               The Eboos have been split and randomly shuffled into 512
@@ -69,23 +70,28 @@ export default function Rarities() {
               2 xrare Eboos and one xxrare Eboo.
             </div>
             <div className="text-xl sm:text-2xl mt-4">
-              Here's a little secret, there's a 1/4 chance that a xxrare Eboo
+              Here's a little secret: there's a 1/4 chance that a xxrare Eboo
               turns into a shiny Eboo.
             </div>
           </div>
-          <div className="lg:flex flex-col items-center p-2 hidden border-4 border-slate-200 rounded-2xl">
-            <div className="grid grid-cols-4">
-              {pack.map((background, index) => (
-                <div className="h-12 w-12 m-2 relative" key={index}>
-                  <Image
-                    height={48}
-                    width={48}
-                    layout="responsive"
-                    src={`/images/background_${background}.png`}
-                    className="rounded"
-                  />
-                </div>
-              ))}
+          <div className="hidden lg:flex flex-col items-center">
+            <div className="p-2 border-4 border-slate-200 rounded-2xl">
+              <div className="grid grid-cols-4">
+                {pack.map((background, index) => (
+                  <div className="h-12 w-12 m-2 relative" key={index}>
+                    <Image
+                      height={48}
+                      width={48}
+                      layout="responsive"
+                      src={`/images/background_${background}.png`}
+                      className="rounded"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="bg-slate-200 py-2 px-6 rounded-b-xl text-slate-600 text-sm">
+              Booster Pack
             </div>
           </div>
         </div>
