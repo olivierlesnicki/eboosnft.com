@@ -1,5 +1,25 @@
 import Image from "next/image";
 
+const backgrounds = ["unique", "rare", "xrare", "xxrare"];
+const pack = [
+  "rare",
+  "unique",
+  "unique",
+  "unique",
+  "unique",
+  "rare",
+  "xrare",
+  "unique",
+  "unique",
+  "xxrare",
+  "unique",
+  "unique",
+  "xrare",
+  "unique",
+  "unique",
+  "rare",
+];
+
 export default function Rarities() {
   return (
     <div className="py-16 text-center">
@@ -21,54 +41,23 @@ export default function Rarities() {
         </div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-8 max-w-6xl mx-auto">
-        <div className="relative aspect-square drop-shadow-2xl">
-          <Image
-            height={512}
-            width={512}
-            layout="responsive"
-            src="/images/background_unique.png"
-            className="rounded-2xl"
-          />
-          <div className="absolute bottom-0 flex justify-center w-full mb-4 text-xl sm:text-2xl text-white">
-            unique.
+        {backgrounds.map((background) => (
+          <div
+            className="relative aspect-square drop-shadow-2xl"
+            key={background}
+          >
+            <Image
+              height={512}
+              width={512}
+              layout="responsive"
+              src={`/images/background_${background}.png`}
+              className="rounded-2xl"
+            />
+            <div className="absolute bottom-0 flex justify-center w-full mb-4 text-xl sm:text-2xl text-white">
+              {background}.
+            </div>
           </div>
-        </div>
-        <div className="relative aspect-square drop-shadow-2xl">
-          <Image
-            height={512}
-            width={512}
-            layout="responsive"
-            src="/images/background_rare.png"
-            className="rounded-2xl"
-          />
-          <div className="absolute bottom-0 flex justify-center w-full mb-4 text-xl sm:text-2xl text-white">
-            rare.
-          </div>
-        </div>
-        <div className="relative aspect-square drop-shadow-2xl">
-          <Image
-            height={512}
-            width={512}
-            layout="responsive"
-            src="/images/background_xrare.png"
-            className="rounded-2xl"
-          />
-          <div className="absolute bottom-0 flex justify-center w-full mb-4 text-xl sm:text-2xl text-white">
-            xrare.
-          </div>
-        </div>
-        <div className="relative aspect-square drop-shadow-2xl">
-          <Image
-            height={512}
-            width={512}
-            layout="responsive"
-            src="/images/background_xxrare.png"
-            className="rounded-2xl"
-          />
-          <div className="absolute bottom-0 flex justify-center w-full mb-4 text-xl sm:text-2xl text-white">
-            xxrare.
-          </div>
-        </div>
+        ))}
       </div>
       <div className="p-8 mt-8">
         <div className="mx-auto rounded-3xl max-w-5xl lg:flex lg:flex-row-reverse lg:items-center">
@@ -85,159 +74,18 @@ export default function Rarities() {
             </div>
           </div>
           <div className="lg:flex flex-col items-center p-2 hidden border-4 border-slate-200 rounded-2xl">
-            <div className="flex">
-              <div className="h-12 w-12 m-2 relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_unique.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12 m-2 relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_unique.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12 m-2 relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_unique.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12 m-2 relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_unique.png"
-                  className="rounded"
-                />
-              </div>
-            </div>
-            <div className="flex">
-              <div className="h-12 w-12 m-2 relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_unique.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12 m-2 relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_unique.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12 m-2 relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_unique.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12 m-2 relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_unique.png"
-                  className="rounded"
-                />
-              </div>
-            </div>
-            <div className="flex">
-              <div className="h-12 w-12 m-2 relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_unique.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12  m-2 rounded relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_rare.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12  m-2 rounded relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_rare.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12  m-2 rounded relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_rare.png"
-                  className="rounded"
-                />
-              </div>
-            </div>
-            <div className="flex">
-              <div className="h-12 w-12  m-2 rounded relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_rare.png"
-                  className="rounded"
-                />
-              </div>
-              <div className="h-12 w-12  m-2 rounded relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_xrare.png"
-                  className="rounded"
-                />
-              </div>
-
-              <div className="h-12 w-12  m-2 rounded relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_xrare.png"
-                  className="rounded"
-                />
-              </div>
-
-              <div className="h-12 w-12  m-2 rounded relative">
-                <Image
-                  height={48}
-                  width={48}
-                  layout="responsive"
-                  src="/images/background_xxrare.png"
-                  className="rounded"
-                />
-              </div>
+            <div className="grid grid-cols-4">
+              {pack.map((background, index) => (
+                <div className="h-12 w-12 m-2 relative" key={index}>
+                  <Image
+                    height={48}
+                    width={48}
+                    layout="responsive"
+                    src={`/images/background_${background}.png`}
+                    className="rounded"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>
