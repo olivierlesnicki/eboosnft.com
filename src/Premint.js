@@ -17,7 +17,7 @@ export default function HeroContent({ children }) {
   return (
     <div className="flex flex-col justify-between items-center text-slate-900 bg-slate-200">
       <div className="px-8 text-center py-16">
-        <h1 className="text-4xl sm:text-6xl font-bold mb-8">Premint phase</h1>
+        <h2 className="text-4xl sm:text-6xl font-bold mb-8">Premint phase</h2>
         <div className="max-w-md sm:max-w-lg md:max-w-2xl mx-auto text-xl sm:text-2xl">
           During 64 days 16 eboos are released every 24 hours. The mint price
           starts at 0.001Ξ and increases by 0.001Ξ every day.
@@ -111,7 +111,7 @@ export default function HeroContent({ children }) {
             <div className="text-xl sm:text-2xl">
               On the 64th day the holders will vote on{" "}
               <a
-                className="text-blue-500 hover:text-blue-600 font-bold"
+                className="text-sky-500 hover:text-sky-600 font-bold"
                 href="https://snapshot.org/#/eboos.eth/proposal/0x87fafa4e8d58ccb3d42789a9629a535c27d9e393756207b824d4a1986fd964bd"
                 target="_blank"
               >
