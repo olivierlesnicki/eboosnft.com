@@ -22,7 +22,7 @@ export function ContractProvider({ children }) {
 
   const [states, setStates] = useState({
     collectionSize: 8192,
-    premintStartTime: 0,
+    premintStartTime: 1646654400,
     reserveSize: 128,
     price: BigNumber.from(0),
     totalSupply: 0,
@@ -58,21 +58,16 @@ export function ContractProvider({ children }) {
         const premintEndTime = (await contract.premintEndTime()).toNumber();
         const reserved = (await contract.reserved()).toNumber();
         const totalSupply = (await contract.totalSupply()).toNumber();
-        const collectionSize = (await contract.collectionSize()).toNumber();
-        const premintStartTime = (await contract.premintStartTime()).toNumber();
-        const reserveSize = (await contract.reserveSize()).toNumber();
 
         if (isActive()) {
-          setLoading(false);
-          setStates({
+          setStates((states) => ({
+            ...states,
             premintEndTime,
             price,
             reserved,
             totalSupply,
-            collectionSize,
-            premintStartTime,
-            reserveSize,
-          });
+          }));
+          setLoading(false);
         }
       }
     },
