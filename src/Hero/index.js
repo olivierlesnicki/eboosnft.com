@@ -14,6 +14,7 @@ export default function Hero() {
   const router = useRouter();
   const auth = useAuth();
   const [minting, setMinting] = useState(false);
+  const [completed, setCompleted] = useState(0);
 
   const {
     collectionSize,
@@ -93,7 +94,10 @@ export default function Hero() {
   if (!available) {
     return (
       <HeroContent>
-        <HeroSoldOut nextTime={nextPremintDropTime} />
+        <HeroSoldOut
+          nextTime={nextPremintDropTime}
+          onComplete={() => setCompleted((_) => _ + 1)}
+        />
       </HeroContent>
     );
   }

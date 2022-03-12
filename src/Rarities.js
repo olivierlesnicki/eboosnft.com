@@ -13,7 +13,7 @@ const pack = [
   "unique",
   "xxrare",
   "unique",
-  "unique",
+  "rare",
   "xrare",
   "unique",
   "unique",
@@ -62,7 +62,7 @@ export default function Rarities() {
       </div>
       <div className="p-8 mt-8">
         <div className="mx-auto rounded-3xl max-w-5xl lg:flex lg:flex-row-reverse lg:items-center">
-          <div className="max-w-2xl text-left mb-8 lg:mb-0 lg:ml-16 mx-auto bg-slate-200 py-12 md:py-16 px-16 rounded-2xl">
+          <div className="max-w-2xl text-left mb-8 lg:mb-0 lg:ml-16 mx-auto bg-slate-200 p-12 md:p-16 rounded-2xl">
             <div className="font-bold text-4xl mb-8">Predictable outcome</div>
             <div className="text-xl sm:text-2xl">
               The Eboos have been split and randomly shuffled into 512
@@ -90,7 +90,7 @@ export default function Rarities() {
                 ))}
               </div>
             </div>
-            <div className="bg-slate-200 py-2 px-6 rounded-b-xl text-slate-600 text-sm">
+            <div className="bg-slate-200 py-2 px-6 rounded-b-xl text-slate-400 text-sm">
               Booster Pack
             </div>
           </div>
