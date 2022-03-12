@@ -84,7 +84,7 @@ export default function Rarities() {
               turns into a shiny Eboo.
             </div>
           </div>
-          <div className="lg:flex flex-col items-center p-2 hidden border-4 border-sky-400 rounded-2xl">
+          <div className="lg:flex flex-col items-center p-2 hidden border-4 border-slate-200 rounded-2xl">
             <div className="flex">
               <div className="h-12 w-12 m-2 relative">
                 <Image
