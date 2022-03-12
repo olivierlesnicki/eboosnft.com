@@ -4,8 +4,8 @@ import QuickStartGuide from "./QuickStartGuide";
 export default function Page() {
   return (
     <>
-      <Premint />
       <QuickStartGuide />
+      <Premint />
     </>
   );
 }

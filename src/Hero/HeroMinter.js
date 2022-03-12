@@ -32,7 +32,7 @@ export default function HeroMinter({ max, onMint, price, available }) {
   }, []);
 
   const handleMint = useCallback(async () => {
-    if (onlineCount >= 1) {
+    if (onlineCount > 10) {
       setIsWarningVisible(true);
     } else {
       onMint(quantity);
