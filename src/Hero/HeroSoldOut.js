@@ -20,6 +20,16 @@ export default function HeroSoldOut({ nextTime }) {
           </a>{" "}
           the largest NFT marketplace.
         </div>
+        <div className="mt-8 max-w-sm">
+          You can also join our community on{" "}
+          <a
+            className="text-blue-500 hover:text-blue-600 font-bold"
+            href="https://eboosnft.com/discord"
+            target="_blank"
+          >
+            Discord
+          </a>{" "}
+        </div>
       </div>
     </>
   );
