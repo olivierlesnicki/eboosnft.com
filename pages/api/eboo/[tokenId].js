@@ -24,7 +24,7 @@ export default async function eboo(req, res) {
   const eboo = tokens[index];
 
   // Return default unexistent token
-  if (tokenId >= Number(totalSupply)) {
+  if (tokenId >= Number(totalSupply) || tokenId < 0) {
     return res.status(200).json({
       name: `Eboo #${tokenId}`,
       description:
