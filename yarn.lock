@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@alch/alchemy-web3@^1.2.4":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@alch/alchemy-web3/-/alchemy-web3-1.2.4.tgz#304b4e2919e2d03006bc3d912fbca80f03cdcb59"
-  integrity sha512-yaE0LozgiaEEsrKU2ZEYh1nBD3b5yEXoqoVakbCs16oj1m89WANSf8/gHVDKZf3ZXlIEHdy2yQht3pV6vw5+Zw==
+"@alch/alchemy-web3@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@alch/alchemy-web3/-/alchemy-web3-1.2.5.tgz#14754a95dccb5e74fd98c21e617525b6629a4cfe"
+  integrity sha512-i1EOGkqhB3STH3LgXucCXDanQfGqte04tBym128nOJ+SFqWEVdEdhTBKzgknOHQ41GhqS+J0tLuFujlIHM5/rQ==
   dependencies:
     "@types/web3" "^1.2.2"
     assert-never "^1.2.0"
