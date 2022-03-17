@@ -17,12 +17,8 @@ export default function Hash() {
   useAsyncEffect(async (isValid) => {
     const provider = window.ethereum;
     const ethersProvider = new ethers.providers.Web3Provider(provider);
-    const iface = new ethers.utils.Interface(json.abi);
 
     const tx = await ethersProvider.getTransaction(hash);
-    //const quantity = iface.decodeFunctionData("premint", tx.data)[0].toNumber();
-
-    console.log("tx", tx);
 
     if (isValid()) {
       if (!tx) {

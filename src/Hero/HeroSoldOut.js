@@ -1,6 +1,6 @@
 import HeroCountdown from "./HeroCountdown";
 
-export default function HeroSoldOut({ nextTime }) {
+export default function HeroSoldOut({ nextTime, onComplete }) {
   return (
     <>
       <div className="flex flex-col items-center">
@@ -8,11 +8,11 @@ export default function HeroSoldOut({ nextTime }) {
           We release 16 eboos every day. <br />
           Come back later.
         </div>
-        <HeroCountdown startTime={nextTime} />
+        <HeroCountdown startTime={nextTime} onComplete={onComplete} />
         <div className="mt-8 max-w-sm">
           If you can't wait, you can also get an Eboo on{" "}
           <a
-            className="text-blue-500 hover:text-blue-600 font-bold"
+            className="text-sky-500 hover:text-sky-600 font-bold"
             href="https://opensea.io/collection/eboos"
             target="_blank"
           >
@@ -23,7 +23,7 @@ export default function HeroSoldOut({ nextTime }) {
         <div className="mt-8 max-w-sm">
           You can also join our community on{" "}
           <a
-            className="text-blue-500 hover:text-blue-600 font-bold"
+            className="text-sky-500 hover:text-sky-600 font-bold"
             href="https://eboosnft.com/discord"
             target="_blank"
           >

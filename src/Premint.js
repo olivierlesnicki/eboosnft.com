@@ -1,17 +1,15 @@
 import { useMemo } from "react";
 import Image from "next/image";
+import { utils } from "ethers";
+import { useAlchemy } from "./alchemy";
 
 export default function HeroContent({ children }) {
-  let arr = [0, 1];
+  const alchemy = useAlchemy();
 
   const days = useMemo(() => {
     const days = [];
     for (let i = 0; i < 64; i++) days.push(i);
     return days;
-  }, []);
-
-  const day = useMemo(() => {
-    return (Date.now() - 1646654400000) / 1000 / 3600 / 24;
   }, []);
 
   return (
@@ -22,57 +20,58 @@ export default function HeroContent({ children }) {
           During 64 days 16 eboos are released every 24 hours. The mint price
           starts at 0.001Ξ and increases by 0.001Ξ every day.
         </div>
-        <div className="px-16">
-          <div className="relative flex">
-            <div
-              className="mt-8 flex items-center justify-center flex-col -ml-16  relative"
-              style={{
-                left: `${(day / 64) * 100}%`,
-              }}
-            >
-              <div className="py-2 w-32 bg-sky-500 text-white rounded text-lg">
-                <div>
-                  Day {Math.floor(day + 1)} / 64 <br />
-                  <span className="font-bold">
-                    {Math.floor(day) * 0.001 + 0.001}Ξ
-                  </span>
-                </div>
-              </div>
+        {!alchemy.loading && (
+          <div className="px-16">
+            <div className="relative flex">
               <div
-                className="border-t-sky-500"
+                className="mt-8 flex items-center justify-center flex-col -ml-16  relative"
                 style={{
-                  width: 0,
-                  height: 0,
-                  borderLeft: "10px solid transparent",
-                  borderRight: "10px solid transparent",
-                  borderTopWidth: `10px`,
+                  left: `${((alchemy.day + 0.5) / 64) * 100}%`,
                 }}
-              />
+              >
+                <div className="py-2 w-32 bg-sky-500 text-white rounded text-lg">
+                  <div>
+                    Day {Math.floor(alchemy.day + 1)} / 64 <br />
+                    <span className="font-bold">
+                      {utils.formatEther(alchemy.price)} Ξ
+                    </span>
+                  </div>
+                </div>
+                <div
+                  className="border-t-sky-500"
+                  style={{
+                    width: 0,
+                    height: 0,
+                    borderLeft: "10px solid transparent",
+                    borderRight: "10px solid transparent",
+                    borderTopWidth: `10px`,
+                  }}
+                />
+              </div>
+            </div>
+            <div className="mt-2 flex">
+              {days.map((index) =>
+                index < alchemy.day ? (
+                  <div
+                    className="h-4 flex-1 mr-0.5 bg-sky-300"
+                    key={index}
+                  ></div>
+                ) : index == alchemy.day ? (
+                  <div
+                    className="h-4 flex-1 mr-0.5 bg-sky-500"
+                    key={index}
+                  ></div>
+                ) : (
+                  <div
+                    className="h-4 flex-1 mr-0.5 bg-slate-300"
+                    key={index}
+                  ></div>
+                )
+              )}
             </div>
           </div>
-          <div className="mt-2 flex">
-            {days.map((index) =>
-              index < day - 1 ? (
-                <div className="h-4 flex-1 mr-0.5 bg-sky-500" key={index}></div>
-              ) : index < day ? (
-                <div className="h-4 flex-1 mr-0.5 bg-slate-300" key={index}>
-                  <div
-                    className=" bg-sky-500"
-                    style={{
-                      height: "100%",
-                      width: `${(day - Math.floor(day)) * 100}%`,
-                    }}
-                  ></div>
-                </div>
-              ) : (
-                <div
-                  className="h-4 flex-1 mr-0.5 bg-slate-300"
-                  key={index}
-                ></div>
-              )
-            )}
-          </div>
-        </div>
+        )}
+
         <div className="max-w-5xl mx-auto text-xl sm:text-2xl mt-12 text-left">
           <div className="px-12 md:px-16 bg-slate-300 rounded-2xl flex flex-col lg:flex-row items-center lg:items-end">
             <div className="w-60 md:w-72 flex-shrink-0 order-last lg:order-first">

@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { BigNumber, ethers, utils } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import useAsyncEffect from "use-async-effect";
 
 import json from "./contract.json";
