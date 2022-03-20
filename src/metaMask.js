@@ -141,7 +141,7 @@ export function MetaMaskButton({ children, className, ...props }) {
   return (
     <button
       {...props}
-      className={`bg-slate-200 hover:bg-slate-300 h-14 px-4 text-lg font-bold rounded-lg flex items-center ${className}`}
+      className={`bg-slate-200 hover:bg-slate-300 h-14 px-4 text-lg font-bold rounded-lg flex items-center ${className} text-slate-900`}
     >
       <Image height={36} width={36} src="/images/metamask.png" />
       <div className="mx-2">{children}</div>

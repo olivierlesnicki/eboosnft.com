@@ -67,7 +67,7 @@ export default function Roadmap() {
         </div>
       </div>
       <div className="lg:flex lg:justify-center">
-        <div className="md:max-w-xl">
+        <div className="md:max-w-xl mb-16 md:mb-0">
           <Milestone start={0} end={512} progress={alchemy.totalSupply}>
             During 64 days 16 Eboos are released every 24 hours. The mint price
             starts at 0.001Ξ and increases by 0.001Ξ every day. It's our way to

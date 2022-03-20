@@ -1,6 +1,6 @@
 const Step = ({ step, title, children }) => {
   return (
-    <div className="flex bg-slate-800 rounded drop-shadow-md relative">
+    <div className="flex bg-slate-800 rounded-2xl drop-shadow-md relative">
       <div className="flex flex-col items-center ml-8">
         <div className="border-l-2 h-6"></div>
         <div className="border-2 h-12 w-12 rounded-full flex items-center justify-center">
