@@ -12,6 +12,7 @@ import Treasuries from "./sections/Treasuries";
 import Snapshots from "./sections/Snapshots";
 import LastSales from "./sections/LastSales";
 import History from "./sections/History";
+import EschatologyOfDeath from "./sections/EschatologyOfDeath";
 
 const getContractMetadata = async (contractAddress) => {
   try {
@@ -147,6 +148,7 @@ export default async function Home() {
           </div>
         </div>
       </div>
+      <EschatologyOfDeath />
       <LastSales />
       <Treasuries />
       <History />

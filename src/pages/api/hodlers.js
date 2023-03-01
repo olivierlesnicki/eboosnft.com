@@ -8,8 +8,8 @@ const settings = {
 const alchemy = new Alchemy(settings);
 
 export default async function hodlers(req, res) {
-  const owners = await alchemy.nft.getOwnersForContract(
+  const { owners } = await alchemy.nft.getOwnersForContract(
     "0xA52863eeF886b51182aBfD8FB2A6Bb96Bbe92699"
   );
-  return res.send(owners);
+  return res.send(owners.join(","));
 }
