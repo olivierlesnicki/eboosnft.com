@@ -21,18 +21,6 @@ const getContractMetadata = async (contractAddress) => {
   return json.contractMetadata;
 };
 
-const getNFTMetadata = async (contractAddress, tokenId) => {
-  const res = await fetch(
-    `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.ALCHEMY_API_KEY}/getNFTMetadata?contractAddress=${contractAddress}&tokenId=${tokenId}`
-  );
-  const json = await res.json();
-  return json;
-};
-
-function Heading2({ children }) {
-  return <h2 className="text-4xl lg:text-6xl font-black">{children}</h2>;
-}
-
 function Eboo({ src }) {
   return (
     <Image
@@ -48,10 +36,6 @@ function Eboo({ src }) {
 export default async function Home() {
   const eboosMetadata = await getContractMetadata(
     process.env.EBOOS_CONTRACT_ADDRESS
-  );
-  const showcasedEboo = await getNFTMetadata(
-    process.env.EBOOS_CONTRACT_ADDRESS,
-    Math.floor(Math.random() * Number(eboosMetadata.totalSupply))
   );
 
   return (
