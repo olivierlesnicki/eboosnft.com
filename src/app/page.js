@@ -14,11 +14,15 @@ import LastSales from "./sections/LastSales";
 import History from "./sections/History";
 
 const getContractMetadata = async (contractAddress) => {
-  const res = await fetch(
-    `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.ALCHEMY_API_KEY}/getContractMetadata?contractAddress=${contractAddress}`
-  );
-  const json = await res.json();
-  return json.contractMetadata;
+  try {
+    const res = await fetch(
+      `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.ALCHEMY_API_KEY}/getContractMetadata?contractAddress=${contractAddress}`
+    );
+    const json = await res.json();
+    return json.contractMetadata;
+  } catch (e) {
+    return {};
+  }
 };
 
 function Eboo({ src }) {
