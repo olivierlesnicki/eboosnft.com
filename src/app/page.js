@@ -109,7 +109,7 @@ export default async function Home() {
             </a>
             <div className="text-center flex flex-col items-center pt-8">
               <div className="text-6xl xl:text-8xl font-black text-indigo-400 mb-2">
-                {eboosMetadata.openSea.floorPrice}Ξ
+                {eboosMetadata?.openSea?.floorPrice}Ξ
               </div>
               <div className="text-sm uppercase py-2 px-3 text-indigo-400 border-2 border-indigo-400 rounded-full">
                 Prix plancher
