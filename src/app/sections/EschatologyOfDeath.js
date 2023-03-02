@@ -33,7 +33,7 @@ export default function EschatologyOfDeath() {
           >
             Mint un NFT
           </a>
-          <div className="text-red-300">1 mint / wallet (2 pour les Eboos)</div>
+          <div className="text-red-300">1 mint / wallet</div>
         </div>
         <div></div>
       </div>
