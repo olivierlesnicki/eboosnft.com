@@ -114,7 +114,7 @@ export default async function History() {
           <div className="text-xl lg:text-2xl p-4 border-2 border-indigo-400 rounded-2xl text-indigo-300">
             Le serveur est ouvert à tous, rejoins-le en suivant les instructions
             sur{" "}
-            <a href="https:// guild.xyz/eboos" className="font-extrabold">
+            <a href="https://guild.xyz/eboos" className="font-extrabold">
               guild.xyz/eboos
             </a>
             .
